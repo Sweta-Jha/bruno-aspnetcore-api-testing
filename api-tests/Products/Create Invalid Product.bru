@@ -1,0 +1,30 @@
+meta {
+  name: Create Invalid Product
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/products
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "X",
+    "price": 0,
+    "stock": 5
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+tests {
+  test("explains which fields are wrong", function () {
+    expect(res.body.errors).to.have.property("Name");
+    expect(res.body.errors).to.have.property("Price");
+  });
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Update Product
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/products/{{productId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Wireless Mouse",
+    "price": 34.99,
+    "stock": 95
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.price: eq 34.99
+}
