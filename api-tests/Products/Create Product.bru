@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/products
   body: json
-  auth: none
+  auth: inherit
 }
 
 body:json {
@@ -31,4 +31,16 @@ tests {
   test("new product gets an id", function () {
     expect(res.body.id).to.be.a("number");
   });
+
+  test("Location header points to the new product", function () {
+    expect(res.getHeader("location")).to.match(new RegExp("/api/products/" + res.body.id + "$", "i"));
+  });
+}
+
+docs {
+  Creates a product and saves its id in the productId variable (see the post-response script).
+  Get Product By Id, Update Product, Delete Product and Get Deleted Product all use that id,
+  so this request must run before them.
+
+  A 201 response should also send a Location header with the new product's URL.
 }

@@ -7,9 +7,14 @@ meta {
 delete {
   url: {{baseUrl}}/api/products/{{productId}}
   body: none
-  auth: none
+  auth: inherit
 }
 
 assert {
   res.status: eq 204
+}
+
+docs {
+  Deletes the product. 204 means "done, nothing to return".
+  Get Deleted Product checks that it is really gone.
 }

@@ -7,10 +7,21 @@ meta {
 get {
   url: {{baseUrl}}/api/products
   body: none
-  auth: none
+  auth: inherit
 }
 
 assert {
   res.status: eq 200
   res.body: isArray
+}
+
+tests {
+  test("returns the seeded products", function () {
+    expect(res.body.length).to.be.at.least(3);
+  });
+}
+
+docs {
+  The simplest check: the API is up, the key is accepted and the list comes back.
+  The assert block covers the status and type; the test checks the seeded data is there.
 }

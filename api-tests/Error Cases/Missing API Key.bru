@@ -1,0 +1,20 @@
+meta {
+  name: Missing API Key
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/products
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}
+
+docs {
+  This request uses "auth: none" instead of "auth: inherit", so it does not send the
+  X-Api-Key header. The API must refuse it with 401 Unauthorized.
+}

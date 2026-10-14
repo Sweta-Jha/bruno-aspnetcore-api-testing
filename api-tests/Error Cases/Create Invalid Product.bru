@@ -1,13 +1,13 @@
 meta {
   name: Create Invalid Product
   type: http
-  seq: 7
+  seq: 1
 }
 
 post {
   url: {{baseUrl}}/api/products
   body: json
-  auth: none
+  auth: inherit
 }
 
 body:json {
@@ -27,4 +27,10 @@ tests {
     expect(res.body.errors).to.have.property("Name");
     expect(res.body.errors).to.have.property("Price");
   });
+}
+
+docs {
+  The name is too short (minimum 3 characters) and the price is 0 (minimum 0.01).
+  ASP.NET Core rejects the body before the controller runs and lists each bad field
+  under "errors". The test checks both fields are reported.
 }

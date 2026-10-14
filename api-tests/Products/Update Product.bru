@@ -7,7 +7,7 @@ meta {
 put {
   url: {{baseUrl}}/api/products/{{productId}}
   body: json
-  auth: none
+  auth: inherit
 }
 
 body:json {
@@ -21,4 +21,9 @@ body:json {
 assert {
   res.status: eq 200
   res.body.price: eq 34.99
+  res.body.stock: eq 95
+}
+
+docs {
+  Changes the price and stock, then checks the response has the new values.
 }

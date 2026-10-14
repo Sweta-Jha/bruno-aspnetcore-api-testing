@@ -1,0 +1,28 @@
+meta {
+  name: Update Missing Product
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/api/products/999999
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Ghost Product",
+    "price": 10,
+    "stock": 1
+  }
+}
+
+assert {
+  res.status: eq 404
+}
+
+docs {
+  The body is valid but no product has id 999999, so the API must answer 404
+  instead of creating a new product or returning 200.
+}

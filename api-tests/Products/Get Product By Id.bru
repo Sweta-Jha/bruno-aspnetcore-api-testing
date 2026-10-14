@@ -7,10 +7,21 @@ meta {
 get {
   url: {{baseUrl}}/api/products/{{productId}}
   body: none
-  auth: none
+  auth: inherit
 }
 
 assert {
   res.status: eq 200
   res.body.name: eq Wireless Mouse
+}
+
+tests {
+  test("has exactly the product fields", function () {
+    expect(res.body).to.have.all.keys("id", "name", "price", "stock");
+  });
+}
+
+docs {
+  Reads back the product that Create Product saved.
+  The test checks the response shape, so a renamed or extra field fails the run.
 }

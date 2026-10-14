@@ -18,15 +18,37 @@ jobs:
           node-version: 22
       - run: npm install -g @usebruno/cli@4.2.0
       - run: dotnet build ProductCatalog.slnx -c Release
+
+      # The API only lives for this job, so a new random key each run is enough.
+      # No secret is stored anywhere, and add-mask hides the key in the logs.
+      - name: Create a throwaway API key
+        run: |
+          key=$(openssl rand -hex 16)
+          echo "::add-mask::$key"
+          echo "API_KEY=$key" >> "$GITHUB_ENV"
+
       - name: Start the API
+        env:
+          ApiKey: ${{ env.API_KEY }}
         run: |
           dotnet run --project src/ProductCatalog.Api -c Release --no-build --launch-profile http > api.log 2>&1 &
           for i in $(seq 1 30); do
-            curl -sf http://localhost:5080/api/products > /dev/null && exit 0
+            # 401 is fine here: it means the API is up and checking keys.
+            code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5080/api/products || true)
+            [ "$code" = "401" ] && exit 0
             sleep 2
           done
           cat api.log
           exit 1
+
+      # bru reads API_KEY from the environment because there is no .env file in CI.
       - name: Run the Bruno collection
         working-directory: api-tests
-        run: bru run --env Local
+        run: bru run --env Local --reporter-html results/report.html --reporter-junit results/junit.xml
+
+      - name: Upload the test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bruno-report
+          path: api-tests/results/
