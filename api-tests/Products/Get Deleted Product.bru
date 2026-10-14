@@ -1,0 +1,20 @@
+meta {
+  name: Get Deleted Product
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/products/{{productId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}
+
+docs {
+  Runs after Delete Product. The 204 only says the delete was accepted;
+  this check proves the product is really gone.
+}

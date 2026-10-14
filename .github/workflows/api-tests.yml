@@ -1,0 +1,32 @@
+name: API tests (Bruno)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g @usebruno/cli@4.2.0
+      - run: dotnet build ProductCatalog.slnx -c Release
+      - name: Start the API
+        run: |
+          dotnet run --project src/ProductCatalog.Api -c Release --no-build --launch-profile http > api.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5080/api/products > /dev/null && exit 0
+            sleep 2
+          done
+          cat api.log
+          exit 1
+      - name: Run the Bruno collection
+        working-directory: api-tests
+        run: bru run --env Local
