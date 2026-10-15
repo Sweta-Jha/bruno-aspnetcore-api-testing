@@ -40,7 +40,7 @@ If you skip step 1, the API stops at startup with a message that tells you what 
 dotnet run --project src\ProductCatalog.Api
 ```
 
-The API listens on `http://localhost:5080`. Swagger UI is at `http://localhost:5080/swagger`; choose **Authorize** and enter the key to use **Try it out**.
+The API listens on `http://localhost:5080`.
 
 ## Test it with Bruno
 
