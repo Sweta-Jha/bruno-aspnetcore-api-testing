@@ -1,4 +1,38 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="global.json" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/api-tests.yml" />
+  </Folder>
+  <Folder Name="/api-tests/">
+    <File Path="api-tests/.env.sample" />
+    <File Path="api-tests/.gitignore" />
+    <File Path="api-tests/bruno.json" />
+    <File Path="api-tests/collection.bru" />
+  </Folder>
+  <Folder Name="/api-tests/environments/">
+    <File Path="api-tests/environments/Local.bru" />
+  </Folder>
+  <Folder Name="/api-tests/Error Cases/">
+    <File Path="api-tests/Error Cases/Create Invalid Product.bru" />
+    <File Path="api-tests/Error Cases/folder.bru" />
+    <File Path="api-tests/Error Cases/Missing API Key.bru" />
+    <File Path="api-tests/Error Cases/Update Missing Product.bru" />
+  </Folder>
+  <Folder Name="/api-tests/Products/">
+    <File Path="api-tests/Products/Create Product.bru" />
+    <File Path="api-tests/Products/Delete Product.bru" />
+    <File Path="api-tests/Products/folder.bru" />
+    <File Path="api-tests/Products/Get All Products.bru" />
+    <File Path="api-tests/Products/Get Deleted Product.bru" />
+    <File Path="api-tests/Products/Get Product By Id.bru" />
+    <File Path="api-tests/Products/Update Product.bru" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/ProductCatalog.Api/ProductCatalog.Api.csproj" />
   </Folder>
