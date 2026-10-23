@@ -19,19 +19,20 @@ Tested with .NET SDK 10.0.200, Bruno 4.2, Bruno CLI 4.2.0 and Node.js 22.14.0.
 
 ## Set up the API key
 
-Every `/api` request must send an `X-Api-Key` header. The API and Bruno each need the same key.
-
-The API already has a demo key, `local-dev-key`, in `src/ProductCatalog.Api/appsettings.Development.json`, so it runs straight after a clone. You only need to give the same key to Bruno:
+Every `/api` request must send an `X-Api-Key` header. The API and Bruno each need the same key, and neither copy is committed to Git.
 
 ```powershell
 git clone https://github.com/Sweta-Jha/bruno-aspnetcore-api-testing.git
 cd bruno-aspnetcore-api-testing
 
-# Give the key to Bruno (api-tests\.env is ignored by Git)
+# 1. Give the key to the API (stored in your user profile, outside the repo)
+dotnet user-secrets set ApiKey local-dev-key --project src\ProductCatalog.Api
+
+# 2. Give the same key to Bruno (api-tests\.env is ignored by Git)
 copy api-tests\.env.sample api-tests\.env
 ```
 
-The demo key is only for local use. A real key never belongs in Git. To use your own key, set it in user secrets (`dotnet user-secrets set ApiKey <your-key> --project src\ProductCatalog.Api`) or in the `ApiKey` environment variable, which is what CI does. Both override the file. Put the same key in `api-tests\.env`.
+If you skip step 1, the API stops at startup with a message that tells you what to run.
 
 ## Run the API
 
