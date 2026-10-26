@@ -21,11 +21,13 @@ jobs:
 
       # The API only lives for this job, so a new random key each run is enough.
       # No secret is stored anywhere, and add-mask hides the key in the logs.
+      # The key replaces the demo key in api-tests/.env, so the API and Bruno use the same one.
       - name: Create a throwaway API key
         run: |
           key=$(openssl rand -hex 16)
           echo "::add-mask::$key"
           echo "API_KEY=$key" >> "$GITHUB_ENV"
+          echo "API_KEY=$key" > api-tests/.env
 
       - name: Start the API
         env:
@@ -41,7 +43,6 @@ jobs:
           cat api.log
           exit 1
 
-      # bru reads API_KEY from the environment because there is no .env file in CI.
       - name: Run the Bruno collection
         working-directory: api-tests
         run: bru run --env Local --reporter-html results/report.html --reporter-junit results/junit.xml

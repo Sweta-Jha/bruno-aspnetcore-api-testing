@@ -5,6 +5,8 @@
 
 # dotenv files
 .env
+# The demo collection commits its .env on purpose, see the README
+!api-tests/.env
 
 # User-specific files
 *.rsuser

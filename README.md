@@ -19,20 +19,24 @@ Tested with .NET SDK 10.0.200, Bruno 4.2, Bruno CLI 4.2.0 and Node.js 22.14.0.
 
 ## Set up the API key
 
-Every `/api` request must send an `X-Api-Key` header. The API and Bruno each need the same key, and neither copy is committed to Git.
+Every `/api` request must send an `X-Api-Key` header. The API and Bruno each need the same key, and both copies are already in the repo, so there is nothing to set up:
+
+| Who uses it | Where it is |
+|---|---|
+| The API | `ApiKey` in `src/ProductCatalog.Api/appsettings.Development.json` |
+| Bruno | `API_KEY` in `api-tests/.env` |
+
+Both are set to the demo key `local-dev-key`. To change it, change both files.
 
 ```powershell
 git clone https://github.com/Sweta-Jha/bruno-aspnetcore-api-testing.git
 cd bruno-aspnetcore-api-testing
-
-# 1. Give the key to the API (stored in your user profile, outside the repo)
-dotnet user-secrets set ApiKey local-dev-key --project src\ProductCatalog.Api
-
-# 2. Give the same key to Bruno (api-tests\.env is ignored by Git)
-copy api-tests\.env.sample api-tests\.env
 ```
 
-If you skip step 1, the API stops at startup with a message that tells you what to run.
+> **The key is committed only to keep this demo simple.** In a real project, never commit keys to Git:
+>
+> - Keep the API key in [user secrets](https://learn.microsoft.com/aspnet/core/security/app-secrets) on your machine (`dotnet user-secrets set ApiKey <your-key> --project src\ProductCatalog.Api`), and in environment variables or a vault such as Azure Key Vault on servers. Both override `appsettings.Development.json`.
+> - Add `.env` to `.gitignore`, and commit a `.env.sample` with placeholder values that each developer copies to `.env`.
 
 ## Run the API
 
@@ -93,9 +97,9 @@ bru run --env Local --reporter-html results/report.html
 `.github/workflows/api-tests.yml`:
 
 1. builds the API;
-2. creates a random API key for this run only and hides it in the logs;
+2. creates a random API key for this run only, hides it in the logs and writes it to `api-tests/.env` in place of the demo key;
 3. starts the API with that key and waits until it answers;
-4. runs the collection, which reads the same key from the `API_KEY` environment variable;
+4. runs the collection, which reads the same key from `api-tests/.env`;
 5. uploads the HTML and JUnit reports as the `bruno-report` artifact, even when a check fails.
 
 A failed check fails the job.

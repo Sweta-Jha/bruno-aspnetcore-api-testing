@@ -10,7 +10,7 @@
     <File Path=".github/workflows/api-tests.yml" />
   </Folder>
   <Folder Name="/api-tests/">
-    <File Path="api-tests/.env.sample" />
+    <File Path="api-tests/.env" />
     <File Path="api-tests/.gitignore" />
     <File Path="api-tests/bruno.json" />
     <File Path="api-tests/collection.bru" />
